@@ -8,11 +8,15 @@ class MoviesController < ApplicationController
 
   def index
     @ratings = Movie.ratings
+   
+    unless params[:ratings].nil?
+     session[:ratings] = params[:ratings]
+    end
 
     unless params[:order].nil?
         @movies = Movie.order(params[:order])
     else
-        @selected_ratings = params[:ratings] ? params[:ratings].keys : Movie.ratings
+        @selected_ratings = session[:ratings] ? session[:ratings].keys : Movie.ratings
         @movies = Movie.where(rating: @selected_ratings) 
     end
   end
